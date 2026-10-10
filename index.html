@@ -85,7 +85,7 @@ dialog.big{width:min(560px,calc(100vw - 24px));max-height:92vh;overflow:auto}
 @media(max-width:600px){.cg{grid-template-columns:1fr}.cg .btn{width:100%}footer{padding-bottom:90px}}
 .hero{display:block;width:100%;max-height:300px;object-fit:cover;object-position:center 60%}
 html{scroll-behavior:smooth}
-#kdlg{position:fixed;inset:0;z-index:99;background:rgba(0,0,0,.88);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:12px}#kdlg[hidden]{display:none}#kdlg video,#kdlg img{max-width:100%;max-height:70vh;border:3px solid #fff;border-radius:12px;background:#000}#kdlg .row{justify-content:center}
+#kdlg{position:fixed;inset:0;z-index:99;background:rgba(0,0,0,.88);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:12px}#kdlg[hidden]{display:none}#kdlg video,#kdlg img{max-width:100%;max-height:70vh;border:3px solid #fff;border-radius:12px;background:#000}#kdlg .row{justify-content:center}#kst.er{color:#ffb4ab}#kq{margin:0;max-width:560px;width:100%;padding:10px 14px;border-radius:12px;font-weight:700;font-size:17px;text-align:center;background:#333;color:#fff}#kq.ok{background:#1b7a34}#kq.warn{background:#b3261e}#kq small{display:block;font-weight:400;font-size:14px;margin-top:4px}#kq[hidden]{display:none}.btn:disabled{opacity:.6;cursor:default;transform:none}
 .vh{position:absolute;opacity:0;width:1px;height:1px;min-height:0;padding:0;border:0;overflow:hidden}
 .lst{max-width:1100px;margin:16px auto 0;padding:0 16px}
 .lbox{background:var(--card);border-radius:18px;padding:18px;border-top:5px solid var(--o);box-shadow:0 2px 4px rgba(0,0,0,.06),0 12px 28px rgba(60,40,10,.12)}
@@ -142,7 +142,7 @@ a.btn.cta{display:flex;width:100%;margin:0 0 14px;font-size:19px}
 <label class="dz" id="dz" for="lf"><b data-t="dz"></b><small data-t="dzs"></small></label>
 <button class="btn" id="kbtn" type="button" style="width:100%;margin-bottom:12px" data-t="cam"></button>
 <input type="file" id="kfile" class="vh" accept="image/*" capture="environment">
-<div id="kdlg" hidden role="dialog" aria-modal="true"><video id="kvid" playsinline muted autoplay></video><img id="kimg" alt="" hidden><p id="kst" style="color:#fff;margin:0;font-weight:700" role="status"></p><div class="row"><button class="btn" id="kshot" type="button" data-t="cshot"></button><button class="btn dark" id="kre" type="button" data-t="cre" hidden></button><button class="btn dark" id="kx" type="button" data-t="cx"></button></div></div>
+<div id="kdlg" hidden role="dialog" aria-modal="true"><video id="kvid" playsinline muted autoplay></video><img id="kimg" alt="" hidden><p id="kq" role="status" hidden></p><p id="kst" style="color:#fff;margin:0;font-weight:700" role="status"></p><div class="row"><button class="btn" id="kshot" type="button" disabled></button><button class="btn" id="kok" type="button" data-t="cok" hidden></button><button class="btn dark" id="kre" type="button" data-t="cre" hidden></button><button class="btn dark" id="kx" type="button" data-t="cx"></button></div></div>
 <input type="file" id="lf" class="vh" accept="image/*,.txt,.csv,.docx,.xlsx,text/plain">
 <label class="tx"><span data-t="pt"></span><textarea id="li" rows="5" data-ph="pph"></textarea></label>
 <div class="row"><button class="btn" id="lgo" type="button" data-t="lgo"></button><button class="btn dark" id="lex" type="button" data-t="lex"></button><button class="btn dark" id="lclr" type="button" data-t="lclr"></button></div>
@@ -247,14 +247,14 @@ $("cres").onclick=e=>{if(e.target.id=="cadd"&&last&&!last.err)add(last.i,last.q)
 /* ===== Список покупок -> чек (всё в браузере; цены/скидки/корзина — существующие sum/pct/kind/add) ===== */
 Object.assign(T.ru,{hbtn:"Есть список? Загрузите",lt:"Загрузите список покупок — получите чек",ls1:"Пришлите фото списка, файл или вставьте текст — посчитаем по нашим ценам за пару секунд.",dz:"Перетащите фото или файл сюда или нажмите",dzs:"Фото (jpg, png), .txt, .csv, .docx, .xlsx",pt:"Или вставьте текст списка",pph:"Например:\nцемент м500 5 мешков\nкраска белая 10л — 3\n3 шт кафель настенный белый\n1) гвозди 100мм 2кг",lgo:"Посчитать чек",lex:"Пример списка",lclr:"Очистить",
 lnote:"Демо, цены условные. Рукописный почерк распознаётся не идеально — проверьте строки. Фото читается прямо в вашем браузере; для первого фото нужен интернет (загрузка модуля распознавания, около 15 МБ). Word и Excel — только новые форматы (.docx, .xlsx); старые .doc и .xls не читаются.",
-locl:"Загружаем модуль распознавания…",locr:"Распознаём фото… {x}%",lread:"Читаем файл…",lerr_ocr:"Не удалось распознать фото (нет сети или модуль заблокирован). Вставьте текст списком в поле выше.",lerr_empty:"Список пустой — вставьте текст или загрузите файл.",lerr_file:"Этот файл не читается. Подойдут фото, .txt, .csv, .docx, .xlsx.",lerr_none:"На фото текст не найден. Снимите ровнее и крупнее или вставьте текст.",ldone:"Готово. Проверьте строки ниже.",lfoto:"Фото распознано. Проверьте строки: рукописный текст читается неточно.",
+locl:"Распознаём… (первый раз до минуты — загружается модуль)",locr:"Распознаём… {x}%",lread:"Читаем файл…",lerr_ocr:"Не удалось распознать фото (нет сети или модуль заблокирован). Вставьте текст списком в поле выше.",lerr_empty:"Список пустой — вставьте текст или загрузите файл.",lerr_file:"Этот файл не читается. Подойдут фото, .txt, .csv, .docx, .xlsx.",lerr_none:"На фото текст не найден. Снимите ровнее и крупнее или вставьте текст.",ldone:"Готово. Проверьте строки ниже.",lfoto:"Фото распознано. Проверьте строки: рукописный текст читается неточно.",
 rh:"Ваш чек",rit:"Товар",rq:"Кол-во",rp:"Цена",rs:"Сумма",runk:"Уточним у менеджера",runkh:"Эти строки не нашлись в каталоге — менеджер уточнит.",rwr:"Вы написали: «{x}»",ramb:"Уточните товар — похожих несколько",rq1:"Количество не указано — взяли 1",rsug:"Возможно, вы имели в виду:",rpick:"— выберите —",
 radd:"Добавить всё в корзину",rprint:"Распечатать чек",rwa:"Отправить заказ в WhatsApp",rdis:"Демо: цены условные, чек не является документом.",radded:"В корзину добавлено позиций: {x}",rcnt:"Позиций в чеке: {x}",rwh:"Заказ по списку (демо)"});
-Object.assign(T.ru,{cam:"Снять список на камеру",cshot:"Сфотографировать",cre:"Переснять",cx:"Закрыть",lerr_cam:"Камера недоступна или доступ запрещён. Нажмите «Загрузите фото» выше и выберите снимок списка."});
-Object.assign(T.ky,{cam:"Тизмени камерага тартуу",cshot:"Сүрөткө тартуу",cre:"Кайра тартуу",cx:"Жабуу",lerr_cam:"Камера жеткиликсиз же уруксат берилген жок. Жогорудагы «Сүрөттү жүктөңүз» дегенди басып, тизменин сүрөтүн тандаңыз."});
+Object.assign(T.ru,{cam:"Снять список на камеру",cwait:"Камера запускается…",cok:"Распознать",kq_ok:"Фото чёткое — можно читать",kl_ok:"Чётко — можно снимать",kq_blur:"Размыто — переснимите, держите ровнее",kq_dark:"Слишком темно",kq_bright:"Слишком светло, блики",kq_small:"Бумага мелко в кадре — подойдите ближе",kq_hint:"Распознать можно и так, но результат может быть неточным.",lerr_camstart:"Камера включилась, но не показывает картинку. Закройте окно и нажмите снова или загрузите фото выше.",cshot:"Сфотографировать",cre:"Переснять",cx:"Закрыть",lerr_cam:"Камера недоступна или доступ запрещён. Нажмите «Загрузите фото» выше и выберите снимок списка."});
+Object.assign(T.ky,{cam:"Тизмени камерага тартуу",cwait:"Камера иштеп баштады…",cok:"Таануу",kq_ok:"Сүрөт даана — окууга болот",kl_ok:"Даана — тартса болот",kq_blur:"Бүдөмүк — кайра тартыңыз, түз кармаңыз",kq_dark:"Өтө караңгы",kq_bright:"Өтө жарык, жалтыроо",kq_small:"Кагаз кадрда кичине — жакыныраак келиңиз",kq_hint:"Ушул бойдон тааныса болот, бирок жыйынтык так болбошу мүмкүн.",lerr_camstart:"Камера иштеди, бирок сүрөт көрүнбөйт. Терезени жаап, кайра басыңыз же жогорудан сүрөт жүктөңүз.",cshot:"Сүрөткө тартуу",cre:"Кайра тартуу",cx:"Жабуу",lerr_cam:"Камера жеткиликсиз же уруксат берилген жок. Жогорудагы «Сүрөттү жүктөңүз» дегенди басып, тизменин сүрөтүн тандаңыз."});
 Object.assign(T.ky,{hbtn:"Тизмеңиз барбы? Жүктөңүз",lt:"Сатып алуу тизмесин жүктөңүз — чек алыңыз",ls1:"Тизменин сүрөтүн же файлын жөнөтүңүз, же текстин чаптаңыз — баа боюнча бат эле эсептеп беребиз.",dz:"Сүрөттү же файлды бул жерге сүйрөңүз же басыңыз",dzs:"Сүрөт (jpg, png), .txt, .csv, .docx, .xlsx",pt:"Же тизменин текстин чаптаңыз",lgo:"Чекти эсептөө",lex:"Тизмеден мисал",lclr:"Тазалоо",
 lnote:"Демо, баалар шарттуу. Кол жазма так таанылбайт — саптарды текшериңиз. Сүрөт браузериңизде окулат; биринчи сүрөт үчүн интернет керек (таануу модулун жүктөө, болжол менен 15 МБ). Word жана Excel — жаңы форматтар гана (.docx, .xlsx); эски .doc жана .xls окулбайт.",
-locl:"Таануу модулу жүктөлүүдө…",locr:"Сүрөт таанылууда… {x}%",lread:"Файл окулууда…",lerr_ocr:"Сүрөттү тааный алган жокпуз (интернет жок же модуль бөгөттөлгөн). Тизмени текст катары жогорудагы талаага чаптаңыз.",lerr_empty:"Тизме бош — текст чаптаңыз же файл жүктөңүз.",lerr_file:"Мындай файл окулбайт. Сүрөт, .txt, .csv, .docx, .xlsx жарайт.",lerr_none:"Сүрөттөн текст табылган жок. Түз жана чоңураак тартып көрүңүз же текстти чаптаңыз.",ldone:"Даяр. Саптарды төмөндө текшериңиз.",lfoto:"Сүрөт таанылды. Саптарды текшериңиз: кол жазма так окулбайт.",
+locl:"Таанууда… (биринчи жолу бир мүнөткө чейин — модуль жүктөлүүдө)",locr:"Таанууда… {x}%",lread:"Файл окулууда…",lerr_ocr:"Сүрөттү тааный алган жокпуз (интернет жок же модуль бөгөттөлгөн). Тизмени текст катары жогорудагы талаага чаптаңыз.",lerr_empty:"Тизме бош — текст чаптаңыз же файл жүктөңүз.",lerr_file:"Мындай файл окулбайт. Сүрөт, .txt, .csv, .docx, .xlsx жарайт.",lerr_none:"Сүрөттөн текст табылган жок. Түз жана чоңураак тартып көрүңүз же текстти чаптаңыз.",ldone:"Даяр. Саптарды төмөндө текшериңиз.",lfoto:"Сүрөт таанылды. Саптарды текшериңиз: кол жазма так окулбайт.",
 rh:"Сиздин чек",rit:"Товар",rq:"Саны",rp:"Баасы",rs:"Суммасы",runk:"Менеджер тактайт",runkh:"Бул саптар каталогдон табылган жок — менеджер тактайт.",rwr:"Сиз жазгансыз: «{x}»",ramb:"Товарды тактаңыз — окшошу бир нече",rq1:"Саны көрсөтүлгөн эмес — 1 алынды",rsug:"Балким, муну айткансыз:",rpick:"— тандаңыз —",
 radd:"Баарын себетке кошуу",rprint:"Чекти басып чыгаруу",rwa:"Заказды WhatsApp аркылуу жөнөтүү",rdis:"Демо: баалар шарттуу, чек документ эмес.",radded:"Себетке кошулду: {x}",rcnt:"Чектеги позициялар: {x}",rwh:"Тизме боюнча заказ (демо)"});
 
@@ -339,21 +339,59 @@ async function readFile(f){const n=f.name.toLowerCase();
  if(/\.(txt|csv|tsv|md)$/.test(n)||f.type.startsWith("text/")){let s=await f.text();if(/\.(csv|tsv)$/.test(n))s=s.replace(/"/g,"").replace(/[;\t]/g," — ").replace(/,\s*(\d+(?:[.,]\d+)?)\s*$/gm," — $1");return{t:s}}
  throw"file"}
 async function onFile(f){if(!f)return;try{const r=await readFile(f);if(!/[а-яa-z0-9]{2}/i.test(r.t)){say("lerr_none",0,1);return}
-  $("li").value=r.t.replace(/\r/g,"").trim();build(r.img?"lfoto":"ldone")}catch(e){say(e=="ocr"?"lerr_ocr":"lerr_file",0,1)}$("lf").value=""}
+  $("li").value=r.t.replace(/\r/g,"").trim();build(r.img?"lfoto":"ldone");return true}catch(e){say(e=="ocr"?"lerr_ocr":"lerr_file",0,1)}finally{$("lf").value=""}}
 $("lf").onchange=e=>onFile(e.target.files[0]);
-/* --- камера --- */
-let cst=null,cblob=null,ctk=0;new MutationObserver(()=>{$("kst").textContent=$("ls").textContent}).observe($("ls"),{childList:true,characterData:true,subtree:true});
-const cStop=()=>{if(cst){cst.getTracks().forEach(t=>t.stop());cst=null}$("kvid").srcObject=null};
-function cClose(){ctk++;cStop();$("kdlg").hidden=true;$("kimg").hidden=true;$("kvid").hidden=false;$("kshot").hidden=false;$("kre").hidden=true}
-async function cOpen(){ctk++;$("kimg").hidden=true;$("kvid").hidden=false;$("kshot").hidden=false;$("kre").hidden=true;
+/* --- камера ---
+ Порядок: окно -> ждём первый настоящий кадр (videoWidth>0, а не доверяем play()) -> «Сфотографировать» (до кадра disabled)
+ -> СНИМОК замораживается и показывается крупно + вердикт качества -> «Распознать» (OCR) или «Переснять». OCR сам не стартует. */
+let cst=null,cblob=null,ctk=0,ctm=0,cready=0,cfr=0;
+new MutationObserver(()=>{const e=$("ls"),k=$("kst");k.textContent=e.textContent;k.classList.toggle("er",e.classList.contains("er"))}).observe($("ls"),{childList:true,characterData:true,subtree:true,attributes:true,attributeFilter:["class"]});
+/* Качество кадра. Всё считается на копии шириной 480 px (поэтому не зависит от разрешения камеры).
+ Пороги подобраны на тестовых картинках (напечатанный список 1280x720; размытие 1.2px -> sharp .078 «чётко», 2.5px -> .0105 и 6px -> .005 «размыто»; яркость x0.28 -> mean 55 «темно»; x2.2 с контрастом .7 -> range 42 и x3 -> mean 248 «светло»; список в 20% кадра -> box .196 «мелко», в 40% -> .37 «ок»; шум ±6): порог blur .03, small .3, darkMean 80, flat 60.
+ sh = дисперсия лапласиана / (разброс яркости p95-p5)^2  (нормирована на контраст: тёмный чёткий кадр не «размытый»);
+ мы = средняя яркость; blown = доля пикселей >=250; box = доля кадра, занятая «текстовыми» блоками (по 5-95 перцентилям, без выбросов). */
+const QT={darkMean:80,brightMean:215,flat:60,blur:.03,small:.3};
+function qual(src,sw,sh){const W=480,H=Math.max(8,Math.round(sh*W/sw)),cv=document.createElement("canvas");cv.width=W;cv.height=H;
+ const x=cv.getContext("2d",{willReadFrequently:true});x.drawImage(src,0,0,W,H);const p=x.getImageData(0,0,W,H).data,n=W*H,g=new Uint8Array(n),Hh=new Uint32Array(256);
+ let sum=0;for(let i=0,j=0;j<n;i+=4,j++){const v=(p[i]*.299+p[i+1]*.587+p[i+2]*.114)|0;g[j]=v;Hh[v]++;sum+=v}
+ const pc=q=>{let a=0;for(let v=0;v<256;v++){a+=Hh[v];if(a>=n*q)return v}return 255};
+ const mean=sum/n,p5=pc(.05),p95=pc(.95),range=p95-p5;let bl=0;for(let v=250;v<256;v++)bl+=Hh[v];bl/=n;
+ let s1=0,s2=0,c=0;for(let y=1;y<H-1;y++)for(let i=y*W+1,e=y*W+W-1;i<e;i++){const l=4*g[i]-g[i-1]-g[i+1]-g[i-W]-g[i+W];s1+=l;s2+=l*l;c++}
+ const lv=s2/c-(s1/c)*(s1/c),sharp=lv/Math.max(900,range*range);
+ const B=12,bx=[],by=[],th=Math.max(40,range*.4);for(let by0=0;by0+B<=H;by0+=B)for(let bx0=0;bx0+B<=W;bx0+=B){let lo=255,hi=0;for(let yy=0;yy<B;yy++)for(let xx=0;xx<B;xx++){const v=g[(by0+yy)*W+bx0+xx];if(v<lo)lo=v;if(v>hi)hi=v}if(hi-lo>th){bx.push(bx0);by.push(by0)}}
+ let box=0;if(bx.length>8){const a=bx.slice().sort((u,v)=>u-v),b=by.slice().sort((u,v)=>u-v),i5=Math.floor(a.length*.05),i95=Math.min(a.length-1,Math.floor(a.length*.95));box=((a[i95]-a[i5]+B)*(b[i95]-b[i5]+B))/n}
+ const m={mean,range,blown:bl,sharp,box};let k="ok";
+ if(mean<QT.darkMean)k="dark";else if(range<QT.flat)k=mean>150?"bright":"dark";else if(box<QT.small)k="small";else if(sharp<QT.blur)k="blur";
+ return{k,m}}
+const QK={ok:"kq_ok",blur:"kq_blur",dark:"kq_dark",bright:"kq_bright",small:"kq_small"};
+function qShow(r,live){const e=$("kq");e.hidden=false;e.className=r.k=="ok"?"ok":"warn";
+ e.innerHTML="";e.append(t((live&&r.k=="ok"?"kl_ok":QK[r.k])));if(!live&&r.k!="ok"){const s=document.createElement("small");s.textContent=t("kq_hint");e.append(s)}}
+const cStop=()=>{clearInterval(ctm);ctm=0;if(cst){cst.getTracks().forEach(t=>t.stop());cst=null}$("kvid").srcObject=null};
+function cReset(){$("kimg").hidden=true;$("kvid").hidden=false;$("kshot").hidden=false;$("kok").hidden=true;$("kok").disabled=false;$("kre").hidden=true;$("kq").hidden=true}
+function cClose(){ctk++;cStop();$("kdlg").hidden=true;cReset()}
+async function cOpen(){ctk++;const tk=ctk;cStop();cReset();say();cblob=null;cready=0;cfr=0;
+ const sh=$("kshot");sh.disabled=true;sh.textContent=t("cwait");
  if(!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia)){$("kfile").click();return}
- try{try{cst=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"}},audio:false})}catch(e){if(e&&e.name=="NotAllowedError")throw e;cst=await navigator.mediaDevices.getUserMedia({video:true,audio:false})}
-  const v=$("kvid");v.srcObject=cst;$("kdlg").hidden=false;try{await v.play()}catch(e){}}
- catch(e){cStop();say("lerr_cam",0,1)}}
+ try{try{cst=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"}},audio:false})}catch(e){if(e&&(e.name=="NotAllowedError"||e.name=="SecurityError"))throw e;cst=await navigator.mediaDevices.getUserMedia({video:true,audio:false})}
+  if(tk!=ctk){cStop();return}
+  const v=$("kvid");v.srcObject=cst;$("kdlg").hidden=false;try{await v.play()}catch(e){}
+  const t0=Date.now();
+  ctm=setInterval(()=>{if(tk!=ctk)return;
+   if(!cready){ // кадр считается готовым только когда есть размер картинки и данные кадра
+    if(v.videoWidth>0&&v.readyState>=2){cready=1;sh.disabled=false;sh.textContent=t("cshot")}
+    else if(Date.now()-t0>10000){clearInterval(ctm);ctm=0;say("lerr_camstart",0,1)}
+    return}
+   if(++cfr%3==0)try{qShow(qual(v,v.videoWidth,v.videoHeight),1)}catch(e){}},150)} // ~раз в 450 мс живая подсказка
+ catch(e){cStop();$("kdlg").hidden=true;say("lerr_cam",0,1)}}
 $("kbtn").onclick=cOpen;$("kx").onclick=cClose;
-$("kshot").onclick=()=>{const v=$("kvid");if(!v.videoWidth)return;const c=document.createElement("canvas");c.width=v.videoWidth;c.height=v.videoHeight;c.getContext("2d").drawImage(v,0,0);
- c.toBlob(b=>{cStop();if(!b){cClose();say("lerr_cam",0,1);return}cblob=b;const im=$("kimg");im.src=URL.createObjectURL(b);im.hidden=false;v.hidden=true;$("kshot").hidden=true;$("kre").hidden=false;
-  const f=new File([b],"camera.jpg",{type:"image/jpeg"});f.cam=true;const tk=++ctk;onFile(f).then(()=>{if(tk==ctk&&!$("kdlg").hidden)cClose()})},"image/jpeg",.92)};
+$("kshot").onclick=()=>{const v=$("kvid");if(!cready||!v.videoWidth)return;const c=document.createElement("canvas");c.width=v.videoWidth;c.height=v.videoHeight;c.getContext("2d").drawImage(v,0,0);
+ let r;try{r=qual(c,c.width,c.height)}catch(e){r=null}
+ // сразу замораживаем: показываем снимок вместо видео (не ждём toBlob)
+ const im=$("kimg");im.src=c.toDataURL("image/jpeg",.92);im.hidden=false;v.hidden=true;cStop();$("kshot").hidden=true;$("kok").hidden=false;$("kre").hidden=false;if(r)qShow(r);else $("kq").hidden=true;
+ if(r&&r.k=="ok")$("kok").focus();
+ c.toBlob(b=>{if(!b){cReset();$("kdlg").hidden=false;say("lerr_cam",0,1);return}cblob=b},"image/jpeg",.92)};
+$("kok").onclick=()=>{if(!cblob)return;const b=$("kok"),f=new File([cblob],"camera.jpg",{type:"image/jpeg"});f.cam=true;const tk=ctk;b.disabled=true;$("kre").disabled=true;say("locl");
+ onFile(f).then(ok=>{$("kre").disabled=false;if(tk!=ctk)return;if(ok)cClose();else b.disabled=false})};
 $("kre").onclick=cOpen;
 $("kfile").onchange=e=>{const f=e.target.files[0];if(f)f.cam=true;onFile(f);e.target.value=""};
 document.addEventListener("keydown",e=>{if(e.key=="Escape"&&!$("kdlg").hidden)cClose()});
