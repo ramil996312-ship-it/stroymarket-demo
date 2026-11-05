@@ -354,11 +354,11 @@ function autoc(x,w,h){const d=x.getImageData(0,0,w,h),p=d.data,H=new Uint32Array
  let n=w*h,a=0,lo=0,hi=255;for(let v=0;v<256;v++){a+=H[v];if(a>=n*.02){lo=v;break}}a=0;for(let v=255;v>=0;v--){a+=H[v];if(a>=n*.02){hi=v;break}}if(hi-lo<20){lo=0;hi=255}
  const k=255/(hi-lo);for(let i=0;i<p.length;i+=4){const g=Math.max(0,Math.min(255,((p[i]-lo)*k)|0));p[i]=p[i+1]=p[i+2]=g}x.putImageData(d,0,0)}
 const OCR_URL="https://stroymarket-ocr.ramil996312.workers.dev";
-async function ocrCloud(f){let b;try{b=await createImageBitmap(f,{imageOrientation:"from-image"})}catch(e){b=await createImageBitmap(f)}
+async function ocrCloud(f,mode){let b;try{b=await createImageBitmap(f,{imageOrientation:"from-image"})}catch(e){b=await createImageBitmap(f)}
  const L=Math.max(b.width,b.height),k=L>1600?1600/L:1,c=document.createElement("canvas");c.width=Math.round(b.width*k);c.height=Math.round(b.height*k);
  const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.drawImage(b,0,0,c.width,c.height);
  const img=c.toDataURL("image/jpeg",.85),ac=new AbortController(),tm=setTimeout(()=>ac.abort(),70000);
- try{const r=await fetch(OCR_URL,{method:"POST",body:JSON.stringify({image:img}),signal:ac.signal});if(!r.ok)throw 0;const d=await r.json();if(typeof d.text!="string")throw 0;return d.text}finally{clearTimeout(tm)}}
+ try{const r=await fetch(OCR_URL,{method:"POST",body:JSON.stringify({image:img,mode:mode||""}),signal:ac.signal});if(!r.ok)throw 0;const d=await r.json();if(typeof d.text!="string")throw 0;return d.text}finally{clearTimeout(tm)}}
 async function ocr(f){say("locr",{x:0});try{const t=await ocrCloud(f);if(/[а-яa-z0-9]{2}/i.test(t))return t}catch(e){}return ocrLocal(f)}
 async function ocrLocal(f){say("locl");let T0;try{T0=await loadTes()}catch(e){throw"ocr"}
  try{const cv=await prep(f);const w=await T0.createWorker("rus",1,{langPath:LANGP,cacheMethod:"none",logger:m=>{if(m.status=="recognizing text")say("locr",{x:Math.round(m.progress*100)})}});
@@ -536,7 +536,7 @@ try{const r=JSON.parse(localStorage.getItem(KEY));if(r&&typeof r=="object")S=Obj
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){toast(t("sk_nosave"))}};
 const stk=i=>S.stock[D[i][0]]??(D[i][6]?4+h(D[i][0])%57:0);
 const mn=i=>S.min[D[i][0]]??5;
-const cst=i=>Math.round(D[i][4]*(70+h("c"+D[i][0])%11)/100);
+const cst=i=>S.cost&&S.cost[D[i][0]]>0?S.cost[D[i][0]]:Math.round(D[i][4]*(70+h("c"+D[i][0])%11)/100);
 const sup=i=>CATS[D[i][2]]??3;
 const red=i=>stk(i)<=mn(i);
 const num=v=>Math.max(0,Math.min(999999,Math.floor(+v)||0));
@@ -567,19 +567,19 @@ const oProfit=o=>o.lines.reduce((a,l)=>a+(D[l.i][4]-cst(l.i))*l.q,0);
 let P={mode:"",rows:[],approx:0,msg:"",busy:0};
 const imgf=f=>f.type.startsWith("image/")||/\.(jpe?g|png|webp|bmp|gif|heic|heif)$/i.test(f.name);
 async function recog(f,mode){P={mode,rows:[],approx:0,msg:t("sk_rec"),busy:1};R();
- try{let tx;if(imgf(f)){try{tx=await ocrCloud(f);if(!/[а-яa-z0-9]{2}/i.test(tx))throw 0}catch(e){P.approx=1;tx=await ocrLocal(f)}}else tx=(await readFile(f)).t;
+ try{let tx;if(imgf(f)){try{tx=await ocrCloud(f,mode);if(!/[а-яa-z0-9]{2}/i.test(tx))throw 0}catch(e){P.approx=1;tx=await ocrLocal(f)}}else tx=(await readFile(f)).t;
   const L=String(tx).split(/\r?\n|;/).map(z=>z.trim()).filter(z=>(/[а-яa-z]{3}/i.test(z)||/\d\s*[х×x]\s*\d/i.test(z))&&!HDR.test(z)).slice(0,80);
-  P.rows=L.map(mkRow);if(mode=="inv")P.rows.forEach(r=>{if(r.i<0||!r.st)r.i=-2});P.msg=P.rows.length?"":t("sk_nonepos")}catch(e){P.msg=t("sk_err")}
+  P.rows=L.map(z=>{if(mode=="inv"&&z.includes("|")){const a=z.split("|").map(x=>x.trim()),q=parseFloat(String(a[1]).replace(",",".")),pr=parseFloat(String(a[3]||"").replace(/\s/g,"").replace(",","."));const r=mkRow(a[0]+" — "+(q>0?q:1)+" "+(a[2]||"шт"));if(pr>0)r.price=pr;return r}return mkRow(z)});if(mode=="inv")P.rows.forEach(r=>{if(r.i<0||!r.st)r.i=-2});P.msg=P.rows.length?"":t("sk_nonepos")}catch(e){P.msg=t("sk_err")}
  P.busy=0;R()}
 function vPhoto(){const pk=(id,k)=>`<label class="dz" for="${id}"><b>${t("sk_"+k)}</b><small>${t("sk_"+k+"s")}</small></label><input type="file" id="${id}" class="vh" accept="image/*,.txt,.csv,.docx,.xlsx,text/plain">`;
  let h=pk("skinv","inv")+pk("sklst","lst");if(P.msg)h+=`<p class="lstat" role="status">${esc(P.msg)}</p>`;
  if(P.rows.length){const inv=P.mode=="inv",ord=P.rows.map((r,k)=>k);if(!inv)ord.sort((a,b)=>{const x=P.rows[a].i,y=P.rows[b].i;return(x<0)-(y<0)||(x<0?0:sup(x)-sup(y))});
   h+=`<div class="sko" id="skpv"><div class="skoh"><b>${t(inv?"sk_inv":"sk_lst")}</b></div>${P.approx?`<p class="lstat er">${t("sk_approx")}</p>`:""}<p class="nm">${t("sk_pfound",{x:P.rows.length})}</p>`+ord.map(k=>{const r=P.rows[k],c=r.cands.slice();if(r.i>=0&&!c.includes(r.i))c.unshift(r.i);
-   return `<div class="skl" data-k="${k}"><span class="skln">${r.i>=0?badge(sup(r.i)):""}<small>${t("sk_raw")}: ${esc(r.raw)}</small><select class="skps" aria-label="${t("sk_raw")}"><option value="-1"${r.i==-1?" selected":""}>${t("sk_skip")}</option>${inv?`<option value="-2"${r.i==-2?" selected":""}>${t("sk_newp")}</option>`:""}${c.map(i=>`<option value="${i}" ${i==r.i?"selected":""}>${esc(D[i][1])}</option>`).join("")}</select>${r.i==-2?`<small class="wr">${t("sk_newn")}</small>`:r.i<0?`<small class="wr">${t("sk_unk")}</small>`:""}</span><input class="skpq" type="number" min="1" value="${r.q}" aria-label="${t("sk_qty")}"><button class="qb skpd" type="button" aria-label="${t("sk_del")}">×</button></div>`}).join("")+
+   return `<div class="skl" data-k="${k}"><span class="skln">${r.i>=0?badge(sup(r.i)):""}<small>${t("sk_raw")}: ${esc(r.raw)}${r.price?" · цена "+fmt(r.price):""}</small><select class="skps" aria-label="${t("sk_raw")}"><option value="-1"${r.i==-1?" selected":""}>${t("sk_skip")}</option>${inv?`<option value="-2"${r.i==-2?" selected":""}>${t("sk_newp")}</option>`:""}${c.map(i=>`<option value="${i}" ${i==r.i?"selected":""}>${esc(D[i][1])}</option>`).join("")}</select>${r.i==-2?`<small class="wr">${t("sk_newn")}</small>`:r.i<0?`<small class="wr">${t("sk_unk")}</small>`:""}</span><input class="skpq" type="number" min="1" value="${r.q}" aria-label="${t("sk_qty")}"><button class="qb skpd" type="button" aria-label="${t("sk_del")}">×</button></div>`}).join("")+
    `<div class="bar"><button class="btn sm skpok" type="button">${t(inv?"sk_ainv":"sk_alst")}</button><button class="btn sm dark skpx" type="button">${t("sk_cancel")}</button></div></div>`}
  return h}
-function newItem(r,k){const p=pq(r.raw);let nm=String(p.s||r.raw).replace(/[\s—–:;,-]+$/,"").replace(/\s+/g," ").trim();nm=nm.charAt(0).toUpperCase()+nm.slice(1);if(nm.length<2)nm=r.raw;const u=/меш/i.test(p.u||"")?"мешок":/рул/i.test(p.u||"")?"рулон":/бан/i.test(p.u||"")?"банка":/лист/i.test(p.u||"")?"лист":/уп/i.test(p.u||"")?"упак":"шт";const sku="NEW-"+(Date.now()%1000000)+k;const it=[sku,nm,"Новые товары",u,0,0,1];D.push(it);(S.custom=S.custom||[]).push(it);S.stock[sku]=0;return D.length-1}
-function applyPhoto(){if(P.mode=="inv")P.rows.forEach((r,k)=>{if(r.i==-2)r.i=newItem(r,k)});const m={};P.rows.forEach(r=>{if(r.i>=0)m[r.i]=(m[r.i]||0)+r.q});const ks=Object.keys(m).map(Number);if(!ks.length){toast(t("sk_nonepos"));return}
+function newItem(r,k){const p=pq(r.raw);let nm=String(p.s||r.raw).replace(/[\s—–:;,-]+$/,"").replace(/\s+/g," ").trim();nm=nm.charAt(0).toUpperCase()+nm.slice(1);if(nm.length<2)nm=r.raw;const u=/меш/i.test(p.u||"")?"мешок":/рул/i.test(p.u||"")?"рулон":/бан/i.test(p.u||"")?"банка":/лист/i.test(p.u||"")?"лист":/уп/i.test(p.u||"")?"упак":"шт";const sku="NEW-"+(Date.now()%1000000)+k;const pr=r.price>0?r.price:0,it=[sku,nm,"Новые товары",u,Math.round(pr*1.25),Math.round(pr*1.15),1];if(pr>0){S.cost=S.cost||{};S.cost[sku]=pr}D.push(it);(S.custom=S.custom||[]).push(it);S.stock[sku]=0;return D.length-1}
+function applyPhoto(){if(P.mode=="inv")P.rows.forEach((r,k)=>{if(r.i==-2)r.i=newItem(r,k)});const m={};P.rows.forEach(r=>{if(r.i>=0){m[r.i]=(m[r.i]||0)+r.q;if(P.mode=="inv"&&r.price>0){S.cost=S.cost||{};S.cost[D[r.i][0]]=r.price}}});const ks=Object.keys(m).map(Number);if(!ks.length){toast(t("sk_nonepos"));return}
  if(P.mode=="inv"){lastInv=ks.map(i=>({i,q:m[i]}));ks.forEach(i=>S.stock[D[i][0]]=stk(i)+m[i]);let c=0;S.orders.forEach(o=>{if((o.st=="man"||o.st=="snt")&&o.lines.every(l=>(m[l.i]||0)>=l.q)){o.st="rcv";c++}});save();toast(t("sk_posted",{x:ks.length,y:c}));P={mode:"",rows:[],approx:0,msg:"",busy:0};tab="st";R()}
  else{const o=draft();ks.forEach(i=>{const l=o.lines.find(x=>x.i==i);if(l)l.q=m[i];else o.lines.push({i,q:m[i]})});save();toast(t("sk_toorder",{x:ks.length}));P={mode:"",rows:[],approx:0,msg:"",busy:0};tab="or";R()}}
 const pe=x=>esc(x);
