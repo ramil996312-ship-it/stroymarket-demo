@@ -149,6 +149,7 @@ a.btn.cta{display:flex;width:100%;margin:0 0 14px;font-size:19px}
 .skst{border-radius:10px;padding:2px 10px;font-weight:700;font-size:14px;background:#eee}
 .s-dr{background:#e6e6e6}.s-man{background:#ffe3bf}.s-snt{background:#cfe3f7}.s-rcv{background:#cfeccf}
 .skl{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid #e6dfd4}
+.skfs{max-width:200px;padding:8px;border-radius:10px;border:1px solid #d8cfc0;background:#fff;font:inherit}@media(max-width:600px){.skl{flex-wrap:wrap}.skfs{max-width:100%}}
 .skln{flex:1;min-width:0;overflow-wrap:anywhere}.skln small{color:var(--m)}.skl .skq{width:84px;min-height:46px;padding:6px;text-align:center}.sks{min-width:90px;text-align:right}
 .skf{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid #e6dfd4;font-size:18px}
 .skf.tot2{font-size:21px;color:var(--o2);border-bottom:0}
@@ -516,7 +517,7 @@ sk_tomgr:"Передать менеджеру",sk_files:"Скачать файл
 sk_handed:"Передано менеджеру. Файлов по поставщикам: {x}",sk_recvd:"Товар оприходован на склад",
 sk_supempty:"Нет заказов у менеджера для этого поставщика",sk_wa:"Отправить в WhatsApp",sk_csv:"Скачать файл заказа",sk_csvall:"Скачать файлы всех поставщиков",
 sk_wanote:"Автоотправки нет: кнопка открывает WhatsApp с готовым текстом, остаётся нажать «Отправить». Номера поставщиков вымышленные.",sk_pos:"поз.",
-sk_upl:"Загрузить файл",sk_fnote:"Файл виден всем ролям (хранится в этом браузере, до 25 МБ на файл).",sk_fempty:"Файлов пока нет",sk_who:"Кто",sk_when:"Когда",sk_dl:"Скачать",sk_big:"Файл больше 25 МБ",sk_noidb:"Хранилище файлов в браузере недоступно (приватный режим или нет места). Файл не сохранён.",sk_full:"Память браузера почти заполнена, файлов уже на {x} МБ. Удалите лишнее.",sk_nofile:"Файл не найден в памяти браузера",
+sk_upl:"Загрузить файл",sk_fnote:"Файл виден всем ролям (хранится в этом браузере, до 25 МБ на файл).",sk_fempty:"Файлов пока нет",sk_who:"Кто",sk_when:"Когда",sk_dl:"Скачать",sk_wasup:"Поставщик для отправки",sk_big:"Файл больше 25 МБ",sk_noidb:"Хранилище файлов в браузере недоступно (приватный режим или нет места). Файл не сохранён.",sk_full:"Память браузера почти заполнена, файлов уже на {x} МБ. Удалите лишнее.",sk_nofile:"Файл не найден в памяти браузера",
 sk_fo:"Общая сумма заказов (закупка)",sk_fp:"Предполагаемая прибыль с заказанного",sk_exp:"Расходы за месяц (можно править)",sk_rent:"Аренда",sk_sal:"Зарплаты",sk_oth:"Прочие расходы",
 sk_day:"День",sk_week:"Неделя",sk_month:"Месяц",sk_sold:"Продано",sk_inc:"Доходы (выручка)",sk_cogs:"Себестоимость",sk_exps:"Расходы",sk_net:"Чистая прибыль",
 sk_fdemo:"Продажи — демо-данные, сгенерированы по формуле, не случайные.",sk_pcs:"шт.",sk_nosave:"Не удалось сохранить в браузере",sk_ofin:"По заказам",sk_osum:"Сумма заказов",sk_eq:"{a} − {b} − {c} = {d}"});
@@ -526,7 +527,7 @@ Object.assign(T.ky,{sk_print:"Басып чыгаруу",sk_pdemo:"Демо: ч�
 Object.assign(T.ky,{sk_open:"Кампа",sk_all:"Сатып алууга: бардык сарылар",sk_leg:"Сары — минимумда же аз, жашыл — нормада.",sk_zero:"Жок",sk_title:"Кампа (демо)",sk_back:"Жабуу",sk_dir:"Директор",sk_man:"Менеджер",sk_sel:"Сатуучу",
 sk_st:"Калдыктар",sk_or:"Буйрутмалар",sk_su:"Жеткирүүчүлөр",sk_fl:"Файлдар",sk_fn:"Финансы",sk_stock:"Калдык",sk_min:"Мин.",sk_minb:"Мин. сан",sk_buy:"Сатып алууга",
 sk_draft:"Караламан",sk_mgr:"Менеджерде",sk_sent:"Жеткирүүчүгө жөнөтүлдү",sk_rcv:"Алынды",sk_tomgr:"Менеджерге өткөрүү",sk_wa:"WhatsApp'ка жөнөтүү",sk_csv:"Буйрутма файлын жүктөө",
-sk_day:"Күн",sk_week:"Апта",sk_month:"Ай",sk_sold:"Сатылды",sk_inc:"Киреше",sk_cogs:"Өздүк нарк",sk_exps:"Чыгымдар",sk_net:"Таза пайда",sk_rent:"Ижара",sk_sal:"Эмгек акы",sk_oth:"Башка чыгымдар",sk_dl:"Жүктөө",sk_upl:"Файл жүктөө"});
+sk_day:"Күн",sk_week:"Апта",sk_month:"Ай",sk_sold:"Сатылды",sk_inc:"Киреше",sk_cogs:"Өздүк нарк",sk_exps:"Чыгымдар",sk_net:"Таза пайда",sk_rent:"Ижара",sk_sal:"Эмгек акы",sk_oth:"Башка чыгымдар",sk_dl:"Жүктөө",sk_wasup:"Жөнөтүүчү жеткирүүчү",sk_upl:"Файл жүктөө"});
 
 const h=s=>{let x=7;for(const c of String(s))x=(x*31+c.charCodeAt(0))>>>0;return x};
 let S={stock:{},min:{},orders:[],files:[],exp:{rent:25000,sal:45000,oth:10000},role:"sel",n:0};
@@ -627,7 +628,7 @@ function vSup(){const P=pend();return `<p class="lnote">${t("sk_wanote")}</p><di
  `<div class="bar"><a class="btn sm skwa" ${L.length?`href="${href}" target="_blank" rel="noopener"`:'aria-disabled="true"'}>${t("sk_wa")}</a><button class="btn sm dark skcsv" type="button" ${L.length?"":"disabled"}>${t("sk_csv")}</button><button class="btn sm dark skprs" type="button" ${L.length?"":"disabled"}>${t("sk_print")}</button></div></div>`}).join("")}
 
 function vFiles(){return `<label class="dz" for="skfi"><b>${t("sk_upl")}</b><small>${t("sk_fnote")}</small></label><input type="file" id="skfi" class="vh">`+
- (S.files.length?S.files.map((f,k)=>`<div class="skl"><span class="skln">${esc(f.name)} <small>${t("sk_who")}: ${t("sk_"+f.role)} · ${dt(f.ts)}</small></span><button class="btn sm dark skdl" data-k="${k}" type="button">${t("sk_dl")}</button></div>`).join(""):`<p class="empty">${t("sk_fempty")}</p>`)}
+ (S.files.length?S.files.map((f,k)=>`<div class="skl"><span class="skln">${esc(f.name)} <small>${t("sk_who")}: ${t("sk_"+f.role)} · ${dt(f.ts)}</small></span>${can(S.role)?`<select class="skfs" aria-label="${esc(t("sk_wasup"))}">${SUPN.map((n,q)=>`<option value="${q}">${SKL[q]} · ${esc(n)}</option>`).join("")}</select><button class="btn sm skwf" data-k="${k}" type="button">${t("sk_wa")}</button>`:""}<button class="btn sm dark skdl" data-k="${k}" type="button">${t("sk_dl")}</button></div>`).join(""):`<p class="empty">${t("sk_fempty")}</p>`)}
 
 function vFin(){if(!isFin())return `<p class="empty">${t("sk_deny")}</p>`;const F=fin(),all=S.orders,ot=all.reduce((a,o)=>a+oSum(o),0),op=all.reduce((a,o)=>a+oProfit(o),0),e=S.exp;
  const P=["day","week","month"].map(p=>`<button class="chip skper" data-p="${p}" aria-pressed="${p==per}">${t("sk_"+p)}</button>`).join("");
@@ -691,6 +692,7 @@ K.addEventListener("click",e=>{const b=e.target.closest("button,a");if(!b)return
  else if(b.classList.contains("skwa")){const s=+o.dataset.s,L=pend()[s];if(L.length)markSent(L,s);else e.preventDefault()}
  else if(b.classList.contains("skcsv")){const s=+o.dataset.s,L=pend()[s];if(L.length){const nm="Заказ-"+SKL[s]+".csv";dl(nm,new Blob([csv(L.map(x=>x.l),s,[...new Set(L.map(x=>x.o.id))].join("+"))],{type:"text/csv;charset=utf-8"}))}}
  else if(b.id=="skcsvall"){let n=0;pend().forEach((L,s)=>{if(L.length)setTimeout(()=>dl("Заказ-"+SKL[s]+".csv",new Blob([csv(L.map(x=>x.l),s,[...new Set(L.map(x=>x.o.id))].join("+"))],{type:"text/csv;charset=utf-8"})),n++*300)})}
+ else if(b.classList.contains("skwf")){const f=S.files[b.dataset.k],q=+b.closest(".skl").querySelector(".skfs").value,u="https://wa.me/"+SUPP[q].replace(/D/g,"")+"?text="+encodeURIComponent("Здравствуйте! Отправляю файл «"+f.name+"» (Строймаркет, демо). Файл прикреплён к этому сообщению.");const gb=f.text?Promise.resolve(new Blob([f.text],{type:"text/csv;charset=utf-8"})):f.idb?idbGet(f.id):fetch(f.url).then(r=>r.blob());let fl=null;try{fl=new File([],f.name)}catch(e){}if(fl&&navigator.canShare&&navigator.canShare({files:[fl]})){gb.then(bl=>{const F=new File([bl],f.name,{type:bl.type||"application/octet-stream"});return navigator.share({files:[F],text:"Строймаркет (демо): "+f.name}).catch(()=>{window.open(u,"_blank","noopener")})}).catch(()=>{})}else{window.open(u,"_blank","noopener");gb.then(bl=>bl&&dl(f.name,bl)).catch(()=>{});toast("Файл скачан — прикрепите его в открывшемся WhatsApp")}}
  else if(b.classList.contains("skdl")){const f=S.files[b.dataset.k];if(f.text)dl(f.name,new Blob([f.text],{type:"text/csv;charset=utf-8"}));else if(f.idb)idbGet(f.id).then(bl=>bl?dl(f.name,bl):toast(t("sk_nofile"))).catch(()=>toast(t("sk_noidb")));else fetch(f.url).then(r=>r.blob()).then(bl=>dl(f.name,bl)).catch(()=>{})}
  else if(b.classList.contains("skper")&&isFin()){per=b.dataset.p;R()}});
 
