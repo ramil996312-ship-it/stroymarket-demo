@@ -149,7 +149,7 @@ a.btn.cta{display:flex;width:100%;margin:0 0 14px;font-size:19px}
 .skst{border-radius:10px;padding:2px 10px;font-weight:700;font-size:14px;background:#eee}
 .s-dr{background:#e6e6e6}.s-man{background:#ffe3bf}.s-snt{background:#cfe3f7}.s-rcv{background:#cfeccf}
 .skl{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid #e6dfd4}
-.skpay{margin-top:12px;padding:14px;border:2px dashed #d8cfc0;border-radius:14px;background:#fffaf0}.skqr{display:flex;justify-content:center;margin:12px 0}.skqr svg{max-width:100%;height:auto}.skfs{max-width:200px;padding:8px;border-radius:10px;border:1px solid #d8cfc0;background:#fff;font:inherit}@media(max-width:600px){.skl{flex-wrap:wrap}.skfs{max-width:100%}}
+.rqr{display:flex;justify-content:center;margin:10px 0}.rqr svg{max-width:100%;height:auto}.skpay{margin-top:12px;padding:14px;border:2px dashed #d8cfc0;border-radius:14px;background:#fffaf0}.skqr{display:flex;justify-content:center;margin:12px 0}.skqr svg{max-width:100%;height:auto}.skfs{max-width:200px;padding:8px;border-radius:10px;border:1px solid #d8cfc0;background:#fff;font:inherit}@media(max-width:600px){.skl{flex-wrap:wrap}.skfs{max-width:100%}}
 .skln{flex:1;min-width:0;overflow-wrap:anywhere}.skln small{color:var(--m)}.skl .skpp{flex:none;width:120px;min-height:46px;padding:6px;text-align:center}.skl .skq,.skl .skpq{flex:none;width:84px;min-height:46px;padding:6px;text-align:center}.sks{min-width:90px;text-align:right}
 .skf{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid #e6dfd4;font-size:18px}
 .skf.tot2{font-size:21px;color:var(--o2);border-bottom:0}
@@ -477,7 +477,7 @@ function rcDraw(){const box=$("rc");if(!rows.length){box.hidden=true;box.innerHT
 <h3>${t("rh")}</h3><p class="sb">${t(kind()==5?"cpo":"cpr")}. <span class="np">${t("cphint")}</span> ${t("rcnt",{x:ok.length})}</p>
 ${ok.length?`<div class="rw rwh"><div>${t("rit")}</div><div>${t("rq")}</div><div>${t("rp")}</div><div style="text-align:right">${t("rs")}</div><div></div></div>${ok.map(row).join("")}<div class="rtot"><span>${t("tot")}</span><b id="rtot"></b></div><p class="dsc" id="rsav" hidden></p>`:""}
 ${bad.length?`<h3>${t("runk")}</h3><p class="sb">${t("runkh")}</p>${bad.map(brow).join("")}`:""}
-<p class="sb">${t("rdis")}</p>
+<p class="sb">${t("rdis")}</p>${ok.length&&window.qrMini?`<div class="rqr">${qrMini(QRURL,130)}</div>`:""}
 <div class="rbtn">${ok.length?`<button class="btn" id="radd" type="button">${t("radd")}</button><button class="btn dark" id="rprint" type="button">${t("rprint")}</button><a class="btn dark" id="rwa" target="_blank" rel="noopener" href="#">${t("rwa")}</a>`:""}</div>`;
  rcCalc()}
 $("rc").onchange=e=>{const g=e.target,x=g.dataset;
@@ -592,7 +592,7 @@ function thermal(sub,no,body,totLabel,tot,note){
  fr.srcdoc=html;document.body.appendChild(fr);setTimeout(()=>{if(fr.parentNode)fr.remove()},120000)}
 function itm(name,q,unit,price){const u=pe(un(unit));return '<table><tr class="nm"><td colspan="2">'+pe(name)+'</td></tr><tr><td>'+(price!=null?q+" "+u+" × "+fmt(price/q):"× "+q+" "+u)+'</td><td class="r">'+(price!=null?"= "+fmt(price):"")+'</td></tr></table>'}
 function kv(a,b){return '<table><tr><td>'+pe(a)+'</td><td class="r">'+pe(b)+'</td></tr></table>'}
-window.skPrintList=()=>{try{const ok=rows.filter(r=>r.i>=0);if(!ok.length){window.print();return}let tot=0;const b=ok.map(r=>{const d=D[r.i],sm=sum(d,r.q);tot+=sm;return itm(d[1],r.q,d[3],sm)}).join("");const dd=new Date(),no="Ч-"+String(dd.getDate()).padStart(2,"0")+String(dd.getHours()).padStart(2,"0")+String(dd.getMinutes()).padStart(2,"0");thermal(t("sk_plist"),no,b,null,fmt(tot),t("rdis"))}catch(e){window.print()}};
+window.skPrintList=()=>{try{const ok=rows.filter(r=>r.i>=0);if(!ok.length){window.print();return}let tot=0;const b=ok.map(r=>{const d=D[r.i],sm=sum(d,r.q);tot+=sm;return itm(d[1],r.q,d[3],sm)}).join("");const dd=new Date(),no="Ч-"+String(dd.getDate()).padStart(2,"0")+String(dd.getHours()).padStart(2,"0")+String(dd.getMinutes()).padStart(2,"0");thermal(t("sk_plist"),no,b+(window.qrMini?'<div style="text-align:center;margin-top:6px">'+qrMini(QRURL,110)+'</div>':""),null,fmt(tot),t("rdis"))}catch(e){window.print()}};
 const grpHtml=(lines,pc,hd)=>{let tot=0;const g=groups(lines);const b=Object.keys(g).map(s=>'<h3>'+(hd?pe(SKL[s]+" · "+SUPN[s]):pe(SKL[s]))+'</h3>'+g[s].map(l=>{const c=cst(l.i)*l.q;tot+=c;return itm(D[l.i][1],l.q,D[l.i][3],pc?c:null)}).join("")).join("");return{b,tot}};
 function printOrder(o){const pc=can(S.role),r=grpHtml(o.lines,pc,true);thermal(t("sk_pord"),o.id,r.b,null,pc?fmt(r.tot):null)}
 function printSup(s){const L=pend()[s];if(!L.length)return;const pc=can(S.role),ids=[...new Set(L.map(x=>x.o.id))].join("+");let tot=0;const b='<h3>'+pe(SKL[s]+" · "+SUPN[s])+'</h3><div class="meta">'+pe(SUPP[s])+'</div>'+L.map(x=>{const c=cst(x.l.i)*x.l.q;tot+=c;return itm(D[x.l.i][1],x.l.q,D[x.l.i][3],pc?c:null)}).join("");thermal(t("sk_pord")+" "+SKL[s],ids,b,null,pc?fmt(tot):null)}
@@ -3007,4 +3007,4 @@ var qrcode = function() {
 }(function () {
     return qrcode;
 }));
-</script></body></html>
+;window.QRURL="https://ramil996312-ship-it.github.io/stroymarket-demo/";window.qrMini=function(txt,px){try{var q=qrcode(0,"M");q.addData(txt);q.make();var n=q.getModuleCount(),p="";for(var y=0;y<n;y++)for(var x=0;x<n;x++)if(q.isDark(y,x))p+="M"+x+" "+y+"h1v1h-1z";return '<svg viewBox="-2 -2 '+(n+4)+' '+(n+4)+'" width="'+px+'" height="'+px+'" shape-rendering="crispEdges" role="img" aria-label="QR"><rect x="-2" y="-2" width="'+(n+4)+'" height="'+(n+4)+'" fill="#fff"/><path d="'+p+'" fill="#000"/></svg>'}catch(e){return ""}};</script></body></html>
