@@ -356,7 +356,7 @@ const OCR_URL="https://stroymarket-ocr.ramil996312.workers.dev";
 async function ocrCloud(f){let b;try{b=await createImageBitmap(f,{imageOrientation:"from-image"})}catch(e){b=await createImageBitmap(f)}
  const L=Math.max(b.width,b.height),k=L>1600?1600/L:1,c=document.createElement("canvas");c.width=Math.round(b.width*k);c.height=Math.round(b.height*k);
  const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.drawImage(b,0,0,c.width,c.height);
- const img=c.toDataURL("image/jpeg",.85),ac=new AbortController(),tm=setTimeout(()=>ac.abort(),30000);
+ const img=c.toDataURL("image/jpeg",.85),ac=new AbortController(),tm=setTimeout(()=>ac.abort(),70000);
  try{const r=await fetch(OCR_URL,{method:"POST",body:JSON.stringify({image:img}),signal:ac.signal});if(!r.ok)throw 0;const d=await r.json();if(typeof d.text!="string")throw 0;return d.text}finally{clearTimeout(tm)}}
 async function ocr(f){say("locr",{x:0});try{const t=await ocrCloud(f);if(/[а-яa-z0-9]{2}/i.test(t))return t}catch(e){}return ocrLocal(f)}
 async function ocrLocal(f){say("locl");let T0;try{T0=await loadTes()}catch(e){throw"ocr"}
